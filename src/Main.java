@@ -1,24 +1,44 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class Main {
     public static void main(String[] args) {
 
         MyArrayList arrayList = new MyArrayList();
-        arrayList.add(3);
-        arrayList.add(7);
-        arrayList.add(11);
-        arrayList.add(52);
-        System.out.println(Arrays.toString(arrayList.elements));
+        MyLinkedList linkedList = new MyLinkedList();
 
-        arrayList.remove(1);
-        System.out.println(Arrays.toString(arrayList.elements));
+//        arrayList.add(3);
+//        arrayList.add(7);
+//        arrayList.add(11);
+//        arrayList.add(52);
+//        System.out.println(arrayList);
+//
+//        arrayList.remove(1);
+//        System.out.println(arrayList);
+//
+//        System.out.println(arrayList.size());
+//
+//        System.out.println(arrayList.get(1));
+//
+//        arrayList.clear();
+//        System.out.println(arrayList);
 
-        System.out.println(arrayList.size());
+        System.out.println(linkedList.size());
 
-        System.out.println(arrayList.get(1));
+        linkedList.add("Hello");
+        linkedList.add("Hello");
+        linkedList.add("Hello");
+        System.out.println("Added Hello to list");
+        System.out.println(linkedList.size());
+        System.out.println(linkedList);
 
-        arrayList.clear();
-        System.out.println(Arrays.toString(arrayList.elements));
+        System.out.println(linkedList.get(0) + " index 0");
+        System.out.println(linkedList.get(1) + " index 1");
+        System.out.println(linkedList.get(2) + " index 2");
+
+        linkedList.remove(1);
+        System.out.println("Removed index 1");
+        System.out.println(linkedList);
+
+        linkedList.clear();
+        System.out.println("Clearing");
+        System.out.println(linkedList.size());
     }
 }

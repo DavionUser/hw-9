@@ -24,7 +24,7 @@ public class MyArrayList {
         int removedElement = 0;
 
         if (index < 0 || index >= elements.length -1) {
-            System.out.println("Index " + index + " is out of range");
+            throw new IndexOutOfBoundsException("Index " + index + " is out of range");
         } else {
             for (int i = 0; i < elements.length - 1; i++) {
                 if (i == index) {
@@ -49,8 +49,17 @@ public class MyArrayList {
     public Object get(int index) {
 
             if (index < 0 || index >= elements.length) {
-                System.out.println("Index " + index + " is out of range");
+                throw new IndexOutOfBoundsException("Index " + index + " is out of range");
             }
         return elements[index];
+    }
+
+    @Override
+    public String toString() {
+        String text = "";
+        for (Object item: elements) {
+            text += item + ", ";
+        }
+        return "[" + text.strip() + "]";
     }
 }
