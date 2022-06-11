@@ -62,8 +62,11 @@ public class MyLinkedList {
         return size;
     }
 
-    public Node get(int index) {
+    public Object get(int index) {
+        return node(index).item;
+    }
 
+    Node node(int index) {
         Node x = first;
         for (int i = 0; i < index; i++) {
             x = x.next;
@@ -77,7 +80,7 @@ public class MyLinkedList {
         for (int i = 0; i < this.size(); i++) {
             text += this.get(i) + ", ";
         }
-        return text.strip();
+        return "[" + text.strip() + "]";
     }
 
     private static class Node {
