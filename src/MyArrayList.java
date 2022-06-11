@@ -11,9 +11,11 @@ public class MyArrayList {
             elements[0] = value;
         } else {
             temporary = new Object[elements.length + 1];
+
             for (int i = 0; i < elements.length; i++) {
                 temporary[i] = elements[i];
             }
+
             temporary[temporary.length - 1] = value;
             elements = temporary;
         }
@@ -42,7 +44,6 @@ public class MyArrayList {
     }
 
     public int size() {
-
         return elements.length;
     }
 
@@ -57,8 +58,8 @@ public class MyArrayList {
     @Override
     public String toString() {
         String text = "";
-        for (Object item: elements) {
-            text += item + ", ";
+        for (Object element: elements) {
+            text += element + ", ";
         }
         return "[" + text.strip() + "]";
     }
