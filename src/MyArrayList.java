@@ -57,10 +57,14 @@ public class MyArrayList {
 
     @Override
     public String toString() {
-        String text = "";
-        for (Object element: elements) {
-            text += element + ", ";
+        String text = "[";
+        for (int i = 0; i < elements.length; i++) {
+            text += elements[i];
+            if ((i + 1) == elements.length) {
+                return text + "]";
+            }
+            text += ", ";
         }
-        return "[" + text.strip() + "]";
+        return null;
     }
 }

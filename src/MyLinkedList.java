@@ -76,11 +76,15 @@ public class MyLinkedList {
 
     @Override
     public String toString() {
-        String text = "";
+        String text = "[";
         for (int i = 0; i < this.size(); i++) {
-            text += this.get(i) + ", ";
+            text += this.get(i);
+            if ((i + 1) == this.size()) {
+                return text.strip() + "]";
+            }
+            text += ", ";
         }
-        return "[" + text.strip() + "]";
+        return null;
     }
 
     private static class Node {
