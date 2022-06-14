@@ -1,7 +1,16 @@
-public class MyLinkedList {
+public class MyLinkedList<T> {
+
+    private T t;
     protected Node first;
     protected Node last;
     protected int size = 0;
+
+    public void set(T t) {
+        this.t = t;
+    }
+    public T get() {
+        return t;
+    }
 
     public MyLinkedList() {
     }
@@ -62,8 +71,8 @@ public class MyLinkedList {
         return size;
     }
 
-    public Object get(int index) {
-        return node(index).item;
+    public T get(int index) {
+        return (T) node(index).item;
     }
 
     Node node(int index) {

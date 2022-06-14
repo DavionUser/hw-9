@@ -1,7 +1,15 @@
-public class MyArrayList {
+public class MyArrayList<T> {
 
     private static final int DEFAULT_CAPACITY = 1;
+    private T t;
     public Object[] elements;
+
+    public void set(T t) {
+        this.t = t;
+    }
+    public T get() {
+        return t;
+    }
 
     public void add(Object value) {
         Object[] temporary;
@@ -25,7 +33,7 @@ public class MyArrayList {
         Object[] temporary = new Object[elements.length - 1];
         int removedElement = 0;
 
-        if (index < 0 || index >= elements.length -1) {
+        if (index < 0 || index > elements.length -1) {
             throw new IndexOutOfBoundsException("Index " + index + " is out of range");
         } else {
             for (int i = 0; i < elements.length - 1; i++) {
@@ -44,15 +52,18 @@ public class MyArrayList {
     }
 
     public int size() {
+        if (elements == null) {
+            return 0;
+        }
         return elements.length;
     }
 
-    public Object get(int index) {
+    T get(int index) {
 
             if (index < 0 || index >= elements.length) {
                 throw new IndexOutOfBoundsException("Index " + index + " is out of range");
             }
-        return elements[index];
+        return (T) elements[index];
     }
 
     @Override
