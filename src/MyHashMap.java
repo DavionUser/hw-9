@@ -25,7 +25,7 @@ public class MyHashMap<K, V> {
         Node<K, V> start, temp;
         int hash = hash(key) ;
         int index = hash % INITIAL_CAPACITY;
-//        System.out.println(index +  " index");
+        System.out.println(index +  " index");
 
         if (table == null) {
             table = new Node[INITIAL_CAPACITY];
@@ -59,29 +59,39 @@ public class MyHashMap<K, V> {
     }
 
     public void remove(K key) {
-        Node<K, V> start;
+        Node<K, V> temp;
+        Node<K, V> start = null;
         int hash = hash(key);
         int index = hash % INITIAL_CAPACITY;
 
         if (table == null || table[index] == null) {
             return;
         } else {
-            start = table[index];
+            temp = table[index];
             do {
-                if (start.hash == hash &&
-                        (start.key == key || start.key.equals(key))) {
-                    table[index].next = null;
-                    start = start.next;
-                    --size;
+                if (temp.hash == hash &&
+                        (temp.key == key || temp.key.equals(key))) {
+                    if (start == null) {
+                        table[index] = temp.next;
+                        --size;
+                        break;
+                    } else {
+                        start.next = temp.next;
+                        table[index] = start;
+                        temp = null;
+                        --size;
+                    }
                 } else {
-                    start = start.next;
+                    start = temp;
+                    temp = temp.next;
                 }
-            } while (start != null);
+            } while (temp != null);
         }
     }
 
     public void clear() {
         table = new Node[INITIAL_CAPACITY];
+        size = 0;
     }
 
     public int size() {
