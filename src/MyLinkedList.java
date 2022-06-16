@@ -1,8 +1,8 @@
 public class MyLinkedList<T> {
 
     private T t;
-    protected Node first;
-    protected Node last;
+    protected Node<T> first;
+    protected Node<T> last;
     protected int size = 0;
 
     public void set(T t) {
@@ -15,9 +15,9 @@ public class MyLinkedList<T> {
     public MyLinkedList() {
     }
 
-    public void add(Object value) {
-        final Node l = last;
-        final Node newNode = new Node(l, value, null);
+    public void add(T value) {
+        final Node<T> l = last;
+        final Node<T> newNode = new Node<T>(l, value, null);
         last = newNode;
         if (l == null) {
             first = newNode;
@@ -28,14 +28,14 @@ public class MyLinkedList<T> {
     }
 
     public void remove(int index) {
-        Node x = first;
+        Node<T> x = first;
 
         for (int i = 0; i < index; i++) {
             x = x.next;
         }
 
-        Node prev = x.prev;
-        Node next = x.next;
+        Node<T> prev = x.prev;
+        Node<T> next = x.next;
 
         if (prev == null) {
             first = next;
@@ -56,8 +56,8 @@ public class MyLinkedList<T> {
     }
 
     public void clear() {
-        for (Node x = first; x != null; ) {
-            Node next = x.next;
+        for (Node<T> x = first; x != null; ) {
+            Node<T> next = x.next;
             x.item = null;
             x.next = null;
             x.prev = null;
@@ -72,11 +72,11 @@ public class MyLinkedList<T> {
     }
 
     public T get(int index) {
-        return (T) node(index).item;
+        return node(index).item;
     }
 
-    Node node(int index) {
-        Node x = first;
+    Node<T> node(int index) {
+        Node<T> x = first;
         for (int i = 0; i < index; i++) {
             x = x.next;
         }
@@ -96,12 +96,12 @@ public class MyLinkedList<T> {
         return null;
     }
 
-    private static class Node {
-        Object item;
-        Node next;
-        Node prev;
+    private static class Node<T> {
+        T item;
+        Node<T> next;
+        Node<T> prev;
 
-        Node(Node prev, Object value, Node next) {
+        Node(Node<T> prev, T value, Node<T> next) {
             this.item = value;
             this.next = next;
             this.prev = prev;

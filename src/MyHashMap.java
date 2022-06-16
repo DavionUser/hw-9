@@ -1,28 +1,19 @@
-import java.util.LinkedList;
-import java.util.List;
-
 public class MyHashMap<K, V> {
-
     public static final int INITIAL_CAPACITY = 16;
     private K key;
     private V value;
-    private Node[] hashTable;
-    private int size = 0;
-
-//    public void setKey(K key) {
-//        this.key = key;
-//    }
+    Node<K, V>[] table;
+    protected int size = 0;
 
     public K getKey() {
         return key;
     }
 
-//    public void setValue(V value) {
-//        this.value = value;
-//    }
-
     public V getValue() {
         return value;
+    }
+
+    public MyHashMap() {
     }
 
     public MyHashMap(K key, V value) {
@@ -30,94 +21,135 @@ public class MyHashMap<K, V> {
         this.value = value;
     }
 
-    public MyHashMap() {
-        hashTable = new Node[INITIAL_CAPACITY];
-    }
+    public void put(K key, V value) {
+        Node<K, V> start, temp;
+        int hash = hash(key) ;
+        int index = hash % INITIAL_CAPACITY;
+//        System.out.println(index +  " index");
 
-    public boolean put(Object key, Object value) {
-        Node<K, V> newNode = new Node<>((K) key, (V) value);
-        int index = newNode.hash();
-        if (index < 0) {
-            index = index * -1;
+        if (table == null) {
+            table = new Node[INITIAL_CAPACITY];
         }
 
-        if (hashTable[index] == null) {
-            hashTable[index] = new Node<>(null, null);
-            hashTable[index].getNodes().add(newNode);
+        if (table[index] == null) {
+            start = new Node<>(hash, key, value, null);
+            table[index] = start;
             size++;
-            return true;
-        }
+        } else if (key == null) {
+            table[0] = new Node<>(0, null, value, null);
+            size++;
+        } else {
+            temp = new Node<>(hash, key, value, null);
+            start = table[index];
+            while (start != null) {
+                if (start.hash == temp.hash &&
+                        (start.key == temp.key || start.key.equals(temp.key))) {
+                    start.value = temp.value;
+                    return;
 
-        List<Node<K, V>> nodeList = (List<Node<K, V>>) hashTable[index].getNodes();
-        for (Node<K, V> node: nodeList) {
-            if (newNode.getKey().equals(node.getKey())) {
-                node.value = newNode.value;
-                return true;
+                } else if (start.next == null){
+                    temp.next = start;
+                    table[index] = temp;
+                    size++;
+                    return;
+                }
+                start = start.next;
             }
         }
-        return false;
     }
 
-    public void remove(Object key) {
+    public void remove(K key) {
+        Node<K, V> start;
+        int hash = hash(key);
+        int index = hash % INITIAL_CAPACITY;
 
+        if (table == null || table[index] == null) {
+            return;
+        } else {
+            start = table[index];
+            do {
+                if (start.hash == hash &&
+                        (start.key == key || start.key.equals(key))) {
+                    table[index].next = null;
+                    start = start.next;
+                    --size;
+                } else {
+                    start = start.next;
+                }
+            } while (start != null);
+        }
     }
 
     public void clear() {
-
+        table = new Node[INITIAL_CAPACITY];
     }
 
     public int size() {
         return size;
     }
 
-    public V get(Object key) {
-       int index = hash((K) key);
-       if (index < hashTable.length &&
-            hashTable[index] != null) {
-           List<Node<K, V>> list = (List<Node<K, V>>) hashTable[index].getNodes();
-           for (Node<K, V> node: list) {
-               if (key.equals(node.getKey())) {
-                   return node.getValue();
-               }
-           }
-       }
-       return null;
+    public V get(K key) {
+        Node<K, V> e;
+        return (e = getNode(hash(key), key)) == null ? null : e.value;
     }
 
-    private int hash(final K key) {
-        int hash = 31;
-        hash = hash * 17 + key.hashCode();
-        return hash % INITIAL_CAPACITY;
+    final Node<K,V> getNode(int hash, Object key) {
+        Node<K, V>[] tab;
+        Node<K, V> first, e;
+        int n;
+        K k;
+        if ((tab = table) != null && (n = tab.length) > 0 &&
+                (first = tab[(n - 1) & hash]) != null) {
+            if (first.hash == hash && // always check first node
+                    ((k = first.key) == key || (key != null && key.equals(k))))
+                return first;
+            if ((e = first.next) != null) {
+                do {
+                    if (e.hash == hash &&
+                            ((k = e.key) == key || (key != null && key.equals(k))))
+                        return e;
+                } while ((e = e.next) != null);
+            }
+        }
+        return null;
+    }
+
+    final int hash(K key) {
+        int h;
+        int temp = (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+        if (temp < 0) {
+            temp = temp * -1;
+        }
+        return temp;
     }
 
     @Override
     public String toString() {
-        if (size == 0) {
+        String text = "{";
+        if (table == null || table.length == 0) {
             return "{}";
         }
-        String text = "";
-        for (Node<K, V> node: hashTable) {
-            text += node.toString();
+        for (int i = 0; i < table.length; i++) {
+            if (table[i] == null) {
+                continue;
+            } else if (table[i].next != null) {
+                Node<K, V> start = table[i];
+
+                while (start.next != null) {
+                    start = start.next;
+                    text += start + " ";
+                }
+            }
+            text += table[i] + " ";
         }
-        return "{" + text + "}";
+        return text.strip() + "}";
     }
 
     static class Node<K, V> {
-        private List<Node<K, V>> nodes;
-        private int hash;
+        int hash;
         K key;
         V value;
         Node<K, V> next;
-
-        private Node(K key, V value) {
-            this.key = key;
-            this.value = value;
-            nodes = new LinkedList<Node<K, V>>();
-        }
-
-        private List<Node<K, V>> getNodes() {
-            return nodes;
-        }
 
         Node(int hash, K key, V value, Node<K, V> next) {
             this.hash = hash;
@@ -134,14 +166,8 @@ public class MyHashMap<K, V> {
             return value;
         }
 
-        private int hash() {
-            return hashCode() % INITIAL_CAPACITY;
-        }
-
-        public int hashCode(K key) {
-            hash = 31;
-            hash = hash * 17 + key.hashCode();
-            return hash;
+        public final int hashCode() {
+            return key != null ? key.hashCode() : 0;
         }
 
         public final V setValue(V newValue) {
@@ -149,22 +175,22 @@ public class MyHashMap<K, V> {
             value = newValue;
             return oldValue;
         }
-
-        public final boolean equals(Object o) {
-            if (o == this) {
+        @Override
+        public boolean equals(Object key) {
+            if (key.hashCode() == this.hashCode() && key == this.key) {
                 return true;
             }
-            if (o == null || getClass() != o.getClass()) {
+            if (getClass() != key.getClass()) {
                 return false;
             }
-            Node node = (Node) o;
-            return this.key == node.key && this.key.equals(node.key);
+            Node node = (Node) key;
+            return node.key == key;
         }
 
         @Override
         public final String toString() {
-            return key + "=" + value;
+            String nodes = "";
+                return key + "=" + value;
         }
     }
-
 }

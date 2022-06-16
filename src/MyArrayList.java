@@ -11,7 +11,7 @@ public class MyArrayList<T> {
         return t;
     }
 
-    public void add(Object value) {
+    public void add(T value) {
         Object[] temporary;
 
         if (elements == null) {

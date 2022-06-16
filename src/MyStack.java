@@ -1,6 +1,6 @@
 public class MyStack<T> extends MyArrayList<T> {
 
-    public void push(Object value) {
+    public void push(T value) {
         Object[] temporary;
 
         if (elements == null) {
