@@ -25,7 +25,7 @@ public class MyHashMap<K, V> {
         Node<K, V> start, temp;
         int hash = hash(key) ;
         int index = hash % INITIAL_CAPACITY;
-        System.out.println(index +  " index");
+//        System.out.println(index +  " index");
 
         if (table == null) {
             table = new Node[INITIAL_CAPACITY];
